@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: univem-service
+  annotations:
+    service.beta.kubernetes.io/linode-loadbalancer-throttle: "4"
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: univem-pos
+  sessionAffinity: None
+  

@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root2
+      MONGO_INITDB_ROOT_PASSWORD: root2
+      MONGO_INITDB_DATABASE: my-db2
+    volumes:
+      - 'dbdata:/data/db'
+  mongo-express:
+    image: mongo-express:latest
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root2
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root2
+    depends_on:
+      - mongo
+  web:
+    image: univem:latest
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URI: mongodb://root2:root2@mongo:27017?retryWrites=true&writeConcern=majority
+      DB_NAME: my-db2
+    depends_on:
+      - mongo
+volumes:
+  dbdata:

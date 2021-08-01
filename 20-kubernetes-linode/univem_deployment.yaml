@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: univem-pos-deployment
+  labels:
+    app: univem-pos
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: univem-pos
+  template:
+    metadata:
+      labels:
+        app: univem-pos
+    spec:
+      containers:
+      - name: univem-pos
+        image: leonardortlima/univem:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000

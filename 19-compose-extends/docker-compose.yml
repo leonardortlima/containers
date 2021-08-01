@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  mongo:
+    extends: 
+      file:  docker/mongo.yml
+      service: mongo
+  mongo-express:
+    extends: 
+      file:  docker/mongo-express.yml
+      service: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+    depends_on:
+      - mongo
+  web:
+    build: 
+      context: .
+    image: univem:latest
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URI: mongodb://root2:root2@mongo:27017?retryWrites=true&writeConcern=majority
+      DB_NAME: my-db2
+    depends_on:
+      - mongo
+volumes:
+  dbdata:
